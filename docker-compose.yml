@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  blockchain:
+    build: .
+    container_name: blockchain_backend
+    ports:
+      - "5000:5000"  # Expose port 5000
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13
+    container_name: blockchain_db
+    environment:
+      POSTGRES_DB: blockchain_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"  # Expose port 5432
+
+  frontend:
+    image: nginx:alpine
+    container_name: blockchain_frontend
+    ports:
+      - "8080:80"  # Expose port 8080
+    volumes:
+      - ./frontend:/usr/share/nginx/html  # Serve the frontend files
